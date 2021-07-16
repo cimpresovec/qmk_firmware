@@ -19,7 +19,8 @@ enum layers {
   _QWERTY,
   _LOWER,
   _RAISE,
-  _ADJUST
+  _ADJUST,
+  _NUMPAD
 };
 
 #define LOWER MO(_LOWER)
@@ -51,8 +52,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ADJUST] = LAYOUT_planck_mit(
     _______, RESET,   DEBUG,   RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD,  RGB_VAI, RGB_VAD, KC_DEL ,
     _______, KC_APP,  _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______,
+    _______, _______, _______, _______, _______, _______, TG(_NUMPAD), _______, _______,  _______, _______, _______,
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+),
+
+[_NUMPAD] = LAYOUT_planck_mit(
+    _______, _______, _______, _______, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9, _______,
+    _______, _______, _______, _______, _______, _______, _______, _______, KC_P4,   KC_P5,   KC_P6, _______,
+    _______, _______, _______, _______, _______, _______, TG(_NUMPAD), _______, KC_P1,   KC_P2,   KC_P3, _______,
+    _______, _______, _______, _______, _______,    _______,       _______, KC_P0, _______, _______, _______
 )
 
 };
@@ -61,3 +69,17 @@ layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
+void rgb_matrix_indicators_kb(void) {
+  if (layer_state_is(_NUMPAD)) {
+    for (uint8_t i = 8; i < 11; i++) {
+      rgb_matrix_set_color(i, RGB_TEAL);
+    }
+    for (uint8_t i = 12 + 8; i < 12 + 11; i++) {
+      rgb_matrix_set_color(i, RGB_TEAL);
+    }
+    for (uint8_t i = 24 + 8; i < 24 + 11; i++) {
+      rgb_matrix_set_color(i, RGB_TEAL);
+    }
+    rgb_matrix_set_color(36 + 7, RGB_TEAL);
+  }
+}
