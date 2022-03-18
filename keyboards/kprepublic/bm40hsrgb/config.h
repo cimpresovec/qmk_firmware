@@ -28,6 +28,15 @@
 #define MATRIX_ROWS 4
 #define MATRIX_COLS 12
 
+#define COMBO_COUNT 5
+#define IGNORE_MOD_TAP_INTERRUPT
+//#undef IGNORE_MOD_TAP_INTERRUPT
+//#define PERMISSIVE_HOLD
+//#define HOLD_ON_OTHER_KEY_PRESS
+#undef PERMISSIVE_HOLD
+#undef HOLD_ON_OTHER_KEY_PRESS
+#define TAPPING_TERM 200
+
 /* key matrix pins */
 #define MATRIX_ROW_PINS { B3, B2, E6, B5 }
 #define MATRIX_COL_PINS { B6, C6, B4, D7, D4, D6, C7, F6, F5, F4, F1, F0 }

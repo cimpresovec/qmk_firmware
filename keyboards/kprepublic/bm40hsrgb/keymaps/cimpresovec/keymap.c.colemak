@@ -17,41 +17,26 @@
 
 enum layers { _QWERTY, _LOWER, _RAISE, _ADJUST };
 
-// alpha hold modifiers
-#define KC_CTL_A  MT(MOD_LCTL, KC_A)     // Tap for A, hold for Control
-#define KC_CTL_O  MT(MOD_RCTL, KC_O)     // Tap for colon, hold for Control
-#define KC_SFT_Z  MT(MOD_LSFT, KC_Z)     // Tap for Z, hold for Shift
-#define KC_SFT_SL MT(MOD_RSFT, KC_SLSH)  // Tap for slash, hold for Shift
-
-// thumb modifiers/toggles
-#define KC_GUI_ESC MT(MOD_LGUI, KC_ESC)  // Tap for Esc, hold for GUI (Meta, Command, Win)
-#define KC_ALT_ENT MT(MOD_LALT, KC_ENT)  // Tap for Enter, hold for Alt (Option)
-#define KC_SPE_SPC LT(_LOWER, KC_SPC)  // Tap for Space, hold for Special layer
-#define KC_NUM_SPC LT(_RAISE, KC_SPC)  // Tap for Space, hold for Numbers layer
-#define KC_SFT_TAB MT(MOD_RSFT, KC_TAB)  // Tap for Tab, hold for Right Shift
-
-const uint16_t PROGMEM backspace_combo[] = {KC_R, KC_S, COMBO_END};
-const uint16_t PROGMEM esc_1[] = {KC_W, KC_F, COMBO_END};
-const uint16_t PROGMEM esc_2[] = {KC_N, KC_E, COMBO_END};
-const uint16_t PROGMEM tab[] = {KC_S, KC_T, COMBO_END};
-const uint16_t PROGMEM enter[] = {KC_C, KC_D, COMBO_END};
-
-
-combo_t key_combos[COMBO_COUNT] = {
-    COMBO(backspace_combo, KC_BSPC),
-    COMBO(esc_1, KC_ESC),
-    COMBO(esc_2, KC_ESC),
-    COMBO(tab, KC_TAB),
-    COMBO(enter, KC_ENT)
-};
+#define LOWER MO(_LOWER)
+#define RAISE MO(_RAISE)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-    [_QWERTY] = LAYOUT_planck_mit(
-        KC_Q,     KC_W,   KC_F,   KC_P,   KC_B, _______, _______, KC_J,   KC_L,   KC_U,     KC_Y,   KC_SCLN,
-        KC_CTL_A, KC_R,   KC_S,   KC_T,   KC_G,  _______, _______,    KC_M,   KC_N,   KC_E,     KC_I,   KC_CTL_O,
-        KC_SFT_Z, KC_X,   KC_C,   KC_D,   KC_V,  _______, _______,     KC_K,   KC_H,   KC_COMMA, KC_DOT, KC_SFT_SL,
-        _______, _______, KC_GUI_ESC, KC_ALT_ENT, KC_SPE_SPC,  _______,  KC_NUM_SPC, KC_LSFT, KC_SFT_TAB, _______,_______ ),
+    /* Qwerty
+     * ,-----------------------------------------------------------------------------------.
+     * | Tab  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | Esc  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
+     * |------+------+------+------+------+------+------+------+------+------+------+------|
+     * | BLTog| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
+     * `-----------------------------------------------------------------------------------'
+     */
+    [_QWERTY] = LAYOUT_planck_mit(KC_TAB, KC_Q, KC_W, KC_F, KC_P, KC_B, KC_J, KC_L, KC_U, KC_Y, KC_SCLN, KC_BSPC,
+                                  KC_ESC, KC_A, KC_R, KC_S, KC_T, KC_G, KC_M, KC_N, KC_E, KC_I, KC_O, KC_QUOT,
+                                  KC_LSFT, KC_Z, KC_X, KC_C, KC_D, KC_V, KC_K, KC_H, KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
+                                  RGB_TOG, KC_LCTL, KC_LALT, KC_LGUI, LOWER, KC_SPC, RAISE, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT),
 
     /* Lower
      * ,-----------------------------------------------------------------------------------.
@@ -64,12 +49,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
      * `-----------------------------------------------------------------------------------'
      */
-    [_LOWER] = LAYOUT_planck_mit(
-        KC_EXLM, KC_AT,   KC_LCBR, KC_RCBR, KC_PIPE, _______,_______,         KC_GRV,  KC_TILD, KC_TRNS, KC_TRNS, KC_BSLS,
-        KC_HASH, KC_DLR,  KC_LPRN, KC_RPRN, KC_BTN2, _______,_______,         KC_PLUS, KC_MINS, KC_SLSH, KC_ASTR, KC_QUOT,
-        KC_PERC, KC_CIRC, KC_LBRC, KC_RBRC, KC_BTN1, _______,_______,         KC_AMPR, KC_EQL,  KC_COMM, KC_DOT,  KC_MINS,
-        _______,_______, CMB_TOG, KC_SCLN, KC_EQL, _______,         KC_EQL, KC_SCLN, KC_DEL, _______,_______
-        ),
+    [_LOWER] = LAYOUT_planck_mit(KC_TILD, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
+                                 KC_DEL, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE,
+                                 _______, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, S(KC_NUHS), S(KC_NUBS), KC_HOME, KC_END, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY),
 
     /* Raise
      * ,-----------------------------------------------------------------------------------.
@@ -82,12 +65,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
      * `-----------------------------------------------------------------------------------'
      */
-    [_RAISE] = LAYOUT_planck_mit(
-        KC_1,  KC_2,  KC_3,  KC_4,  KC_5, _______,_______,          KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-        KC_F1, KC_F2, KC_F3, KC_F4, KC_F5,   _______,_______,       KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_VOLU,
-        KC_F6, KC_F7, KC_F8, KC_F9, KC_F10,  _______,_______,       KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_VOLD,
-        _______,_______, KC_F11, KC_F12, KC_TRNS,  _______,       KC_TRNS,  KC_MPLY,  MO(_ADJUST), _______,_______
-        ),
+    [_RAISE] = LAYOUT_planck_mit(KC_GRV, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
+                                 KC_DEL, KC_F1, KC_F2, KC_F3, KC_F4, KC_F5, KC_F6, KC_MINS, KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,
+                                 _______, KC_F7, KC_F8, KC_F9, KC_F10, KC_F11, KC_F12, KC_NUHS, KC_NUBS, KC_PGUP, KC_PGDN, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY),
+
     /* Adjust (Lower + Raise)
      *                      v------------------------RGB CONTROL--------------------v
      * ,-----------------------------------------------------------------------------------.
@@ -100,10 +82,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |      |      |      |      |      |             |      |      |      |      |      |
      * `-----------------------------------------------------------------------------------'
      */
-    [_ADJUST] = LAYOUT_planck_mit(
-        _______, _______, DEBUG, RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL,
-        _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, RESET, _______, _______, _______, _______, _______, _______, _______, _______)
+    [_ADJUST] = LAYOUT_planck_mit(_______, _______, DEBUG, RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL,
+                                  _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, _______, _______,
+                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+                                  RESET, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______)
 
 };
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
